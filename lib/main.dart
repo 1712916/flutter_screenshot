@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'screenshot_listener/screenshot_listener.dart';
 
@@ -42,12 +43,22 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
+    questPermissions();
+
     _listener.init();
 
     _listener.addListener((path) {
       text = path;
       setState(() {});
     });
+  }
+
+  void questPermissions() async {
+    //android 13
+    await Permission.photos.request();
+
+    //android < 13
+    //await Permission.storage.request();
   }
 
   @override
